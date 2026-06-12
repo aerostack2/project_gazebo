@@ -52,7 +52,7 @@ windows:
             namespace:=<%= drone_namespace %>
             config_file:=config/config.yaml
         # Point Gimbal Behavior
-        - ros2 launch as2_behaviors_perception point_gimbal_behavior.launch.py
+        - ros2 launch as2_behaviors_payload point_gimbal_behavior.launch.py
             namespace:=<%= drone_namespace %>
             config_file:=config/config.yaml
 
