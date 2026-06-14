@@ -38,6 +38,10 @@ windows:
             config_file:=config/config.yaml
             plugin_name:=pid_speed_controller
             plugin_config_file:=config/pid_speed_controller.yaml
+        # Ground Truth Pose Delayer
+        - python3 utils/pose_delayer.py
+            -n <%= drone_namespace %>
+            -d 400
 
   # Behaviors
   - behaviors:
@@ -73,3 +77,4 @@ windows:
         - ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node
             --ros-args -r  __ns:=/<%= drone_namespace %>
         - ros2 run as2_python_api mission_executor --n <%= drone_namespace %> --use_sim_time --add_namespace
+        - echo Run here the mission
