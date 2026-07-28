@@ -1,39 +1,73 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <root>
- <tabbed_widget name="Main Window" parent="main_window">
+ <tabbed_widget parent="main_window" name="Main Window">
   <Tab tab_name="position" containers="1">
    <Container>
-    <DockSplitter orientation="-" sizes="0.25;0.25;0.25;0.25" count="4">
+    <DockSplitter sizes="0.250272;0.250272;0.249184;0.250272" count="4" orientation="-">
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000000" top="0.070650" right="110.075726" bottom="-0.049997"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="2.001198" left="0.000000" right="76.123723" bottom="1.961744"/>
        <limitY/>
-       <curve name="/drone0/self_localization/pose/pose/position/x" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/pose/pose/position/x" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/position/x"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/position/x"/>
+       <curve color="#1ac938" name="/drone0/ground_truth/pose_delayed/pose/position/x"/>
       </plot>
      </DockArea>
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000000" top="0.053166" right="110.075726" bottom="-0.110220"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="2.079400" left="0.000000" right="76.123723" bottom="2.039382"/>
        <limitY/>
-       <curve name="/drone0/self_localization/pose/pose/position/y" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/pose/pose/position/y" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/position/y"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/position/y"/>
+       <curve color="#1ac938" name="/drone0/ground_truth/pose_delayed/pose/position/y"/>
       </plot>
      </DockArea>
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000000" top="0.040087" right="110.075726" bottom="-0.022557"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.004377" left="0.000000" right="76.123723" bottom="-0.004638"/>
        <limitY/>
-       <curve name="/drone0/self_localization/pose/pose/position/z" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/pose/pose/position/z" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/position/z"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/position/z"/>
+       <curve color="#1ac938" name="/drone0/ground_truth/pose_delayed/pose/position/z"/>
       </plot>
      </DockArea>
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000000" top="0.003696" right="110.075726" bottom="-0.003701"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="1.592793" left="0.000000" right="76.123723" bottom="1.587149"/>
        <limitY/>
-       <curve name="/drone0/ground_truth/pose/pose/orientation/yaw" color="#ff7f0e"/>
-       <curve name="/drone0/self_localization/pose/pose/orientation/yaw" color="#1f77b4"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/orientation/yaw"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/orientation/yaw"/>
+       <curve color="#1ac938" name="/drone0/ground_truth/pose_delayed/pose/orientation/yaw"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="orientation" containers="1">
+   <Container>
+    <DockSplitter sizes="0.333696;0.332609;0.333696" count="3" orientation="-">
+     <DockArea name="...">
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.002574" left="0.000000" right="76.123723" bottom="-0.002676"/>
+       <limitY/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/orientation/roll"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/orientation/roll"/>
+      </plot>
+     </DockArea>
+     <DockArea name="...">
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.002199" left="0.000000" right="76.123723" bottom="-0.002911"/>
+       <limitY/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/orientation/pitch"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/orientation/pitch"/>
+      </plot>
+     </DockArea>
+     <DockArea name="...">
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="1.592793" left="0.000000" right="76.123723" bottom="1.587149"/>
+       <limitY/>
+       <curve color="#1f77b4" name="/drone0/self_localization/pose/pose/orientation/yaw"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/pose/pose/orientation/yaw"/>
       </plot>
      </DockArea>
     </DockSplitter>
@@ -41,29 +75,29 @@
   </Tab>
   <Tab tab_name="twist" containers="1">
    <Container>
-    <DockSplitter orientation="-" sizes="0.333599;0.332801;0.333599" count="3">
+    <DockSplitter sizes="0.333696;0.332609;0.333696" count="3" orientation="-">
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000057" top="0.058418" right="110.075762" bottom="-0.043776"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.034561" left="0.000035" right="76.123698" bottom="-0.026840"/>
        <limitY/>
-       <curve name="/drone0/self_localization/twist/twist/linear/x" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/twist/twist/linear/x" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/twist/twist/linear/x"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/twist/twist/linear/x"/>
       </plot>
      </DockArea>
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000057" top="0.045659" right="110.075762" bottom="-0.091335"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.041964" left="0.000035" right="76.123698" bottom="-0.018500"/>
        <limitY/>
-       <curve name="/drone0/self_localization/twist/twist/linear/y" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/twist/twist/linear/y" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/twist/twist/linear/y"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/twist/twist/linear/y"/>
       </plot>
      </DockArea>
      <DockArea name="...">
-      <plot flip_x="false" flip_y="false" line_width="1.0" mode="TimeSeries">
-       <range left="0.000057" top="0.019517" right="110.075762" bottom="-0.009912"/>
+      <plot flip_x="false" flip_y="false" mode="TimeSeries" line_width="1.0">
+       <range top="0.003630" left="0.000035" right="76.123698" bottom="-0.007488"/>
        <limitY/>
-       <curve name="/drone0/self_localization/twist/twist/linear/z" color="#1f77b4"/>
-       <curve name="/drone0/ground_truth/twist/twist/linear/z" color="#ff7f0e"/>
+       <curve color="#1f77b4" name="/drone0/self_localization/twist/twist/linear/z"/>
+       <curve color="#ff7f0e" name="/drone0/ground_truth/twist/twist/linear/z"/>
       </plot>
      </DockArea>
     </DockSplitter>
@@ -94,7 +128,7 @@
    <max_array_size value="100"/>
    <boolean_strings_to_number value="true"/>
    <remove_suffix_from_strings value="true"/>
-   <selected_topics value="/drone0/ground_truth/pose;/drone0/self_localization/twist;/drone0/self_localization/pose;/drone0/ground_truth/twist"/>
+   <selected_topics value="/drone0/ground_truth/pose;/drone0/ground_truth/pose_delayed;/drone0/ground_truth/twist;/drone0/self_localization/pose;/drone0/self_localization/twist"/>
   </plugin>
   <plugin ID="UDP Server"/>
   <plugin ID="WebSocket Server"/>

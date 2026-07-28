@@ -44,6 +44,10 @@ while getopts "mn:sg" opt; do
   esac
 done
 
+export IGN_GAZEBO_RESOURCE_PATH=$PWD/worlds:$IGN_GAZEBO_RESOURCE_PATH
+export GZ_SIM_RESOURCE_PATH=$PWD/worlds:$GZ_SIM_RESOURCE_PATH
+export GZ_SIM_RESOURCE_PATH=$PWD/models:$GZ_SIM_RESOURCE_PATH
+
 # Set simulation world description config file
 if [[ ${swarm} == "true" ]]; then
   simulation_config="config/world_swarm.yaml"

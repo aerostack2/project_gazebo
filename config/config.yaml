@@ -13,17 +13,22 @@
   # State Estimator
   state_estimator:
     ros__parameters:
-      use_gazebo_tf: true
+      publish_hz: 100.0
       plugin_name: "simple_ekf"
-      simple_ekf:
-        verbose: true  # Enable verbose logging for debugging purposes.
-        debug_verbose: false  # Enable additional debug logging for EKF internals (e.g., state, covariance).
-        timer_hz: 100.0  # EKF update rate in Hz (default: 100 Hz).
-        max_update_latency_ms: 1000.0  # Max age (ms) of a pose/odom/mocap measurement before it is dropped (out-of-sequence handling).
-        gravity: 9.81  # Gravitational acceleration (m/s^2).
-        earth_map_transform: # By default, the plugin will set the earth to map transform on the first received pose.
-          static_tf: true  # Publish earth to map as tf_static (true) or dynamic tf (false).
-          set_earth_map: false  # Manually set earth to map transform if true.
+      base_frame: "/drone0"  # Base frame of the robot
+      # global_ref_frame: "earth"  # Global reference frame
+      # odom_frame: "odom"  # Odometry frame of the robot
+      # map_frame: "map"  # Map frame
+
+      ground_truth:
+        debug_publish_hz: 0.0  # -1 = max rate, 0 = disabled, >0 = fixed rate
+        pose_sub_topic: "ground_truth/pose"
+        twist_sub_topic: "ground_truth/twist"  # "" -> differentiate the pose instead
+        twist_smooth_filter_cte: 1.0  # (0,1], 1 = no filter. Only used if twist_sub_topic is ""
+        mocap_sub_topic: ""  # MUST be "" for Gazebo, see note below
+        rigid_body_name: 33  # only used when mocap_sub_topic is set
+        earth_map_transform:
+          set_earth_map: false  # false -> earth->map is pinned to the FIRST received pose
           position:
             x: 0.0
             y: 0.0
@@ -32,16 +37,54 @@
             roll: 0.0
             pitch: 0.0
             yaw: 0.0
-        platform_topic: ""  # Topic to subscribe for platform offboard status.
-        use_arm: false  # If true, use arm msg, if false, use offboard boolean for EKF reset logic.
+
+      raw_odometry:
+        debug_publish_hz: 0.0
+        odom_sub_topic: "ground_truth/odom"
+        use_gps: true  # true -> earth->map from first GPS fix (mutually exclusive with the block below)
+        earth_map_transform:
+          set_earth_map: false  # false + use_gps false -> earth->map = identity
+          position:
+            x: 0.0
+            y: 0.0
+            z: 0.0
+          orientation:
+            roll: 0.0
+            pitch: 0.0
+            yaw: 0.0
+
+      simple_ekf:
+        verbose: true  # Enable verbose logging for debugging purposes.
+        debug_verbose: false  # Enable additional debug logging for EKF internals (e.g., state, covariance).
+        debug_publish_hz: 0.0  # Per-plugin debug topic rate (Hz). -1 = max rate, 0 = disabled, >0 = fixed rate
+        timer_hz: 100.0  # EKF update rate in Hz (default: 100 Hz).
+        map_odom_alpha: 0.9  # External state smoothing: out = alpha * previous + (1 - alpha) * new. Only applied to map->odom.
+        internal_ekf_debug_topics: "debug/internal_ekf_state"  # Base name for the raw (pre-smoothing) internal EKF debug topics.
+        max_update_latency_ms: 1000.0  # Max age (ms) of a pose/odom/mocap measurement before it is dropped (out-of-sequence handling).
+        gravity: 9.81  # Gravitational acceleration (m/s^2).
+        earth_map_transform: # By default, the plugin will set the earth to map transform on the first received pose.
+          static_tf: true  # Publish earth to map as tf_static (true) or dynamic tf (false).
+          set_earth_map: true  # Manually set earth to map transform if true.
+          position:
+            x: 0.0
+            y: 0.0
+            z: 0.0
+          orientation:
+            roll: 0.0
+            pitch: 0.0
+            yaw: 0.0
+        platform_topic: "platform/info"  # Topic to subscribe for platform offboard status.
+        # platform_topic: ""  # Topic to subscribe for platform offboard status.
+        use_arm: true  # If true, use arm msg, if false, use offboard boolean for EKF reset logic.
         predict_topic: "sensor_measurements/imu"  # Topic to subscribe for EKF prediction step.
         update_topics:  # List of topics to subscribe for EKF update step.
           # - "gazebo"
           - "gazebo_delayed"
+          # - "estimated_uav_global_pose"
         gazebo:
           topic: "ground_truth/pose"  # Topic to subscribe for pose measurements.
           type: "geometry_msgs/msg/PoseStamped"  # Message type: PoseStamped, PoseWithCovarianceStamped, nav_msgs/msg/Odometry, or mocap4r2_msgs/msg/RigidBodies.
-          set_earth_map: true  # Use this topic to set earth to map transform.
+          set_earth_map: false  # Use this topic to set earth to map transform.
           use_message_covariance: false  # If true: use message covariance (for PoseWithCovarianceStamped/Odometry) or multipliers, if false: use fixed covariance values.
           position_covariance: [1e-4, 1e-4, 1e-4] # Fixed covariance values: x, y, z (used when use_message_covariance=false)
           orientation_covariance: [1e-5, 1e-5, 1e-5] # Fixed covariance values: roll, pitch, yaw (used when use_message_covariance=false)
@@ -49,11 +92,17 @@
         gazebo_delayed:
           topic: "ground_truth/pose_delayed"  # Topic to subscribe for pose measurements.
           type: "geometry_msgs/msg/PoseStamped"  # Message type: PoseStamped, PoseWithCovarianceStamped, nav_msgs/msg/Odometry, or mocap4r2_msgs/msg/RigidBodies.
-          set_earth_map: true  # Use this topic to set earth to map transform.
+          set_earth_map: false  # Use this topic to set earth to map transform.
           use_message_covariance: false  # If true: use message covariance (for PoseWithCovarianceStamped/Odometry) or multipliers, if false: use fixed covariance values.
           position_covariance: [1e-4, 1e-4, 1e-4] # Fixed covariance values: x, y, z (used when use_message_covariance=false)
           orientation_covariance: [1e-5, 1e-5, 1e-5] # Fixed covariance values: roll, pitch, yaw (used when use_message_covariance=false)
-          update_rate_hz: 5.0  # Optional: cap how often this topic feeds the EKF (Hz). 0 or omitted = no limit (use the topic's full rate).
+          update_rate_hz: 1.0  # Optional: cap how often this topic feeds the EKF (Hz). 0 or omitted = no limit (use the topic's full rate).
+        estimated_uav_global_pose:
+          topic: "sensor_measurements/estimated_uav_global_pose"  # Topic to subscribe for pose measurements.
+          type: "geometry_msgs/msg/PoseWithCovarianceStamped"  # Message type: PoseStamped, PoseWithCovarianceStamped, nav_msgs/msg/Odometry, or mocap4r2_msgs/msg/RigidBodies.
+          set_earth_map: false  # Use this topic to set earth to map transform.
+          use_message_covariance: true  # If true: use message covariance (for PoseWithCovarianceStamped/Odometry) or multipliers, if false: use fixed covariance values.
+          # update_rate_hz: 20.0  # Optional: cap how often this topic feeds the EKF (Hz). 0 or omitted = no limit (use the topic's full rate).
 
   # Motion Controller
   controller_manager:

@@ -41,7 +41,10 @@ windows:
         # Ground Truth Pose Delayer
         - python3 utils/pose_delayer.py
             -n <%= drone_namespace %>
-            -d 400
+            -d 150
+        # Ground Truth Pose + Twist -> Odometry
+        - python3 utils/pose_twist_to_odom.py
+            -n <%= drone_namespace %>
 
   # Behaviors
   - behaviors:
@@ -69,6 +72,7 @@ windows:
             drone_id:=<%= drone_namespace %>
             use_sim_time:=true
             tree:=./trees/square.xml
+        - ros2 run as2_python_api mission_executor --n <%= drone_namespace %> --use_sim_time --add_namespace
 
   # Mission monitoring
   - mission_monitoring:
@@ -76,5 +80,25 @@ windows:
       panes:
         - ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node
             --ros-args -r  __ns:=/<%= drone_namespace %>
-        - ros2 run as2_python_api mission_executor --n <%= drone_namespace %> --use_sim_time --add_namespace
+        # - ros2 launch as2_visualization swarm_viz.launch.py
+        #     namespace_list:=<%= drone_namespace %>
+        #     rviz_config:=config_ground_station/rviz2_config.rviz
+        #     drone_model:=quadrotor_base
+        #     use_sim_time:=true
         - echo Run here the mission
+
+  - rosbag_record:
+      layout: tiled
+      panes:
+        # - ./rosbag/record_rosbag.bash <%= drone_namespace %>
+        - sleep 0.5 && rewire record --topics 
+            /tf 
+            /tf_static
+            /drone0/self_localization/pose
+            /drone0/self_localization/twist
+            /drone0/ground_truth/pose
+            /drone0/ground_truth/twist
+            /drone0/debug/internal_ekf_state/pose
+            /drone0/debug/internal_ekf_state/twist
+            --diagnostics
+        - rewire-viewer

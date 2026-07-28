@@ -35,5 +35,10 @@ rosbag_cmd+=" --all"
 # Include hidden topics
 rosbag_cmd+="  --include-hidden-topics"
 
+# MCAP
+rosbag_cmd+="  -s mcap"
+rosbag_cmd+="  --compression-mode file --compression-format zstd"
+
+
 # Execute the rosbag record command
 eval "$rosbag_cmd"
