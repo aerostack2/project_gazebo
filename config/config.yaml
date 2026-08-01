@@ -13,11 +13,9 @@
   # State Estimator
   state_estimator:
     ros__parameters:
-      use_gazebo_tf: true
+      publish_hz: 100.0
       plugin_name: "ground_truth"
-      # Outdoor (GPS)
-      use_gps: true
-      set_origin_on_start: true # Set origin on start
+      base_frame: ""  # Base frame of the robot for gazebo, so it matches the namespace.
 
   # Motion Controller
   controller_manager:
