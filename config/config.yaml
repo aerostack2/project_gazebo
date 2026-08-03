@@ -16,6 +16,10 @@
       plugin_name: "ground_truth"
       base_frame: ""  # Base frame of the robot for gazebo, so it matches the namespace.
       # publish_hz: 100.0  # Set the frequency of the state estimator output.
+      ground_truth:
+        # Gazebo publishes its own ground truth twist, so take it from there. The plugin
+        # default is empty, which differentiates the pose instead.
+        twist_sub_topic: "ground_truth/twist"
 
   # Motion Controller
   controller_manager:
