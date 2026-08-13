@@ -13,9 +13,11 @@
   # State Estimator
   state_estimator:
     ros__parameters:
-      plugin_name: "ground_truth"
       base_frame: ""  # Base frame of the robot for gazebo, so it matches the namespace.
-      # publish_hz: 100.0  # Set the frequency of the state estimator output.
+      publish_hz: 100.0  # Set the frequency of the state estimator output.
+
+      # Use the ground truth pose and twist from the simulator.
+      plugin_name: "ground_truth"
       ground_truth:
         # Use twist from the simulator instead of default (differentiate the pose).
         twist_sub_topic: "ground_truth/twist"
