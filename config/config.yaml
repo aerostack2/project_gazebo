@@ -13,11 +13,27 @@
   # State Estimator
   state_estimator:
     ros__parameters:
-      use_gazebo_tf: true
+      base_frame: ""  # Base frame of the robot for gazebo, so it matches the namespace.
+      publish_hz: 100.0  # Set the frequency of the state estimator output.
+
+      # Use the ground truth pose and twist from the simulator.
       plugin_name: "ground_truth"
-      # Outdoor (GPS)
-      use_gps: true
-      set_origin_on_start: true # Set origin on start
+      ground_truth:
+        # Use twist from the simulator instead of default (differentiate the pose).
+        twist_sub_topic: "ground_truth/twist"
+
+      # # Ground truth fused with the IMU (simple_ekf)
+      # # Might need imu parameters and covariance tuning.
+      # plugin_name: "simple_ekf"
+      # simple_ekf:
+      #   update_topics: ["gt_pose"]
+      #   gt_pose:
+      #     topic: "ground_truth/pose"
+      #     type: "geometry_msgs/msg/PoseStamped"
+      #     set_earth_map: true
+      #     use_message_covariance: false  # Use the fixed values below, not the message ones.
+      #     position_covariance: [1e-4, 1e-4, 1e-4]     # x, y, z — variance, sigma ~ 1 cm
+      #     orientation_covariance: [1e-5, 1e-5, 1e-5]  # roll, pitch, yaw — sigma ~ 0.2 deg
 
   # Motion Controller
   controller_manager:
