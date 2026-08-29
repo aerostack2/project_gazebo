@@ -1,0 +1,70 @@
+[workspace]
+preview = ["pixi-build"]
+authors = ["Alvaro Gaona <alvgaona@gmail.com>"]
+channels = ["conda-forge"]
+name = "project_gazebo"
+platforms = [
+  "linux-64",
+  "linux-aarch64",
+  "osx-arm64"
+]
+version = "1.1.4"
+
+[system-requirements]
+libc = { family = "glibc", version = "2.34" }
+
+[dependencies]
+aerostack2 = { git = "https://github.com/aerostack2/aerostack2.git", branch = "main", subdirectory = "aerostack2" }
+pyyaml = "*"
+
+[tasks]
+launch = "./launch_as2.bash"
+ground-station = "./launch_ground_station.bash"
+stop = "./stop.bash"
+
+[feature.humble]
+channels = ["robostack-humble"]
+
+[feature.humble.dependencies]
+ros-humble-ros2cli = ">=0.18.17,<0.19"
+ros-humble-ros2pkg = ">=0.18.17,<0.19"
+ros-humble-ros2launch = "*"
+ros-humble-ros2run = "*"
+ros-humble-ros2topic = "*"
+ros-humble-ros2node = "*"
+ros-humble-ros2service = "*"
+ros-humble-ros2param = "*"
+ros-humble-ros2interface = "*"
+ros-humble-ros2action = "*"
+# pin: pixi-build-ros >=0.4.1 emits ros2-distro-mutex >=0.9 recipes; only ros-humble-ros-gz-sim
+# 0.244.24+ ships a mutex-0.9 build.
+ros2-distro-mutex = "0.9.*"
+ros-humble-ros-gz-sim = ">=0.244.24"
+
+[feature.humble.target.osx-arm64.dependencies]
+# pin: libignition-math6 6.16.0_1 is the build that re-shipped the ignition-math6-eigen3 cmake
+# config previously dropped on osx-arm64.
+libignition-math6 = { version = ">=6.16.0", build = "*_1" }
+
+[feature.jazzy]
+channels = ["robostack-jazzy"]
+
+[feature.jazzy.activation.env]
+GZ_VERSION = "harmonic"
+
+[feature.jazzy.dependencies]
+ros-jazzy-ros2cli = ">=0.32.8,<0.33"
+ros-jazzy-ros2pkg = ">=0.32.8,<0.33"
+ros-jazzy-ros2launch = "*"
+ros-jazzy-ros2run = "*"
+ros-jazzy-ros2topic = "*"
+ros-jazzy-ros2node = "*"
+ros-jazzy-ros2service = "*"
+ros-jazzy-ros2param = "*"
+ros-jazzy-ros2interface = "*"
+ros-jazzy-ros2action = "*"
+
+[environments]
+humble = ["humble"]
+jazzy = ["jazzy"]
+default = ["jazzy"]
