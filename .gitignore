@@ -2,4 +2,3 @@ rosbags/*
 
 # Pixi
 .pixi/
-pixi.lock

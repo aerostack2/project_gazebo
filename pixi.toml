@@ -4,14 +4,17 @@ authors = ["Alvaro Gaona <alvgaona@gmail.com>"]
 channels = ["conda-forge"]
 name = "project_gazebo"
 platforms = [
-  "linux-64",
-  "linux-aarch64",
-  "osx-arm64"
+  { name = "linux-64-glibc-2-34", platform = "linux-64", glibc = "2.34" },
+  { name = "linux-aarch64-glibc-2-34", platform = "linux-aarch64", glibc = "2.34" },
+  { name = "osx-arm64-14", platform = "osx-arm64", osx = "14.0" },
 ]
 version = "1.1.4"
 
-[system-requirements]
-libc = { family = "glibc", version = "2.34" }
+# pin: libcxx 23 removed std::wstring_convert, still used by rosidl_runtime_cpp
+# headers. Drop when ROS or conda-forge ships a fix. Mirrors aerostack2's workspace.
+[workspace.target.osx-arm64.build-variants]
+c_compiler_version = ["22"]
+cxx_compiler_version = ["22"]
 
 [dependencies]
 aerostack2 = { git = "https://github.com/aerostack2/aerostack2.git", branch = "main", subdirectory = "aerostack2" }
@@ -36,10 +39,10 @@ ros-humble-ros2service = "*"
 ros-humble-ros2param = "*"
 ros-humble-ros2interface = "*"
 ros-humble-ros2action = "*"
-# pin: pixi-build-ros >=0.4.1 emits ros2-distro-mutex >=0.9 recipes; only ros-humble-ros-gz-sim
-# 0.244.24+ ships a mutex-0.9 build.
-ros2-distro-mutex = "0.9.*"
-ros-humble-ros-gz-sim = ">=0.244.24"
+# pin: aerostack2 built via pixi-build-ros requires ros2-distro-mutex 0.11; ros-humble-ros-gz-sim
+# 0.244.26+ is the first build against mutex 0.11.
+ros2-distro-mutex = "0.11.*"
+ros-humble-ros-gz-sim = ">=0.244.26"
 
 [feature.humble.target.osx-arm64.dependencies]
 # pin: libignition-math6 6.16.0_1 is the build that re-shipped the ignition-math6-eigen3 cmake
@@ -65,6 +68,5 @@ ros-jazzy-ros2interface = "*"
 ros-jazzy-ros2action = "*"
 
 [environments]
-humble = ["humble"]
-jazzy = ["jazzy"]
 default = ["jazzy"]
+humble = ["humble"]
