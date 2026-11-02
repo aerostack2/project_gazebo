@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Prevent killing this script's own process so the full clean up happens
+# correctly at the end
+trap '' HUP
+
 # Get the directory of the current script
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
