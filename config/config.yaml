@@ -13,7 +13,7 @@
   # State Estimator
   state_estimator:
     ros__parameters:
-      base_frame: ""  # Base frame of the robot for gazebo, so it matches the namespace.
+      base_frame_id: ""  # Base frame of the robot for gazebo, so it matches the namespace.
       publish_hz: 100.0  # Set the frequency of the state estimator output.
 
       # Use the ground truth pose and twist from the simulator.
